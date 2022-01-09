@@ -2,3 +2,6 @@
 node_modules
 dist
 build
+ca.*
+cert.*
+web-dev-server.config.mjs

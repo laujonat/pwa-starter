@@ -1,5 +1,6 @@
 {
-  "name": "PWA Starter",
+  "name": "Super Clipboard",
+  "id": "/",
   "display": "standalone",
   "start_url": "/",
   "short_name": "starter",

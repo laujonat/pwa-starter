@@ -7,6 +7,7 @@ self.addEventListener("message", (event: any) => {
   }
 });
 
+self.addEventListener('fetch',() => console.log("fetch"));
 
 try {
   //@ts-ignore

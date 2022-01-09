@@ -10,7 +10,7 @@
             "name": "Run PWA",
             "webRoot": "${workspaceFolder}/build",
             "runtimeArgs": [
-                "--app=http://localhost:8000"
+                "--app=https://localhost:8000"
             ],
             "sourceMapPathOverrides": {
                 "../../src": "${workspaceFolder}/src",

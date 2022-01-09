@@ -1,9 +1,10 @@
+import { Router } from "@vaadin/router";
 import { LitElement, css, html } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 
 @customElement('app-header')
 export class AppHeader extends LitElement {
-  @property({ type: String }) title = 'PWA Starter';
+  @property({ type: String }) title = 'Super Clipboard';
 
   @property() enableBack: boolean = false;
 
@@ -11,29 +12,35 @@ export class AppHeader extends LitElement {
     return css`
       header {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
         background: var(--app-color-primary);
         color: white;
-        height: 4em;
+        height: 6em;
       }
 
       header h1 {
-        margin-top: 0;
-        margin-bottom: 0;
+        margin: 0 auto;
         font-size: 20px;
         font-weight: bold;
+        white-space: nowrap;
       }
 
       nav fluent-anchor {
         margin-left: 10px;
       }
 
+      #header-logo {
+        display: flex;
+        align-items: center;
+      }
+
       #back-button-block {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
+        justify-content: flex-start;
         width: 11em;
+        margin: 20px 0;
       }
 
       @media(prefers-color-scheme: light) {
@@ -58,15 +65,27 @@ export class AppHeader extends LitElement {
     }
   }
 
+  goBack() {
+    Router.go("/home");
+  }
+
+  logoTemplate() {
+    return html`
+      <div @click="${() => this.goBack()}" id="header-logo">
+        <img src="https://img.icons8.com/color/50/000000/clipboard.png" alt="Simple Edit app icon" />
+        <h2>${this.title}</h2>
+        </fluent-anchor>`;
+  }
+
   render() {
     return html`
       <header>
         <div id="back-button-block">
-          ${this.enableBack ? html`<fluent-anchor appearance="accent" href="/">
-            Back
-          </fluent-anchor>` : null}
-
-          <h1>${this.title}</h1>
+          <div>
+            ${this.enableBack ? html`<fluent-anchor appearance="accent" href="/home">
+              Back
+            </fluent-anchor>` : this.logoTemplate()}
+          </div>
         </div>
       </header>
     `;

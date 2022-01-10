@@ -10,10 +10,10 @@ export default {
   input: "index.html",
   output: {
     dir: "dist",
-    format: "es",
-    sourcemap: false
+    format: "es"
   },
   plugins: [
+    html(),
     resolve({
       exportConditions: ['production']
     }),
@@ -23,11 +23,14 @@ export default {
         process.env.NODE_ENV || "production"
       ),
     }),
-    html(),
     typescript({
       tsconfig: "tsconfig.json"
     }),
-    terser(),
+    terser({
+      ecma: 2020,
+      module: true,
+      warnings: true,
+    }),
     strip({
       functions: ["console.log"],
     }),

@@ -10,51 +10,82 @@ export class AppHeader extends LitElement {
 
   static get styles() {
     return css`
+      :host {
+        position: fixed;
+        left: calc(env(titlebar-area-x, 0) - 6px);
+        top: env(titlebar-area-y, 0);
+        width: env(titlebar-area-width, 100%);
+        height: env(titlebar-area-height, 33px);
+        -webkit-app-region: drag;
+      }
       header {
         display: flex;
-        justify-content: flex-start;
+        justify-content: space-between;
         align-items: center;
+        padding-left: 16px;
+        padding-right: 16px;
         background: var(--app-color-primary);
         color: white;
-        height: 6em;
+        height: env(titlebar-area-height, 33px);
+        width: emv(titlebar-area-width);
       }
-
-      header h1 {
-        margin: 0 auto;
-        font-size: 20px;
-        font-weight: bold;
-        white-space: nowrap;
+      nav {
+        width: 9em;
+        display: flex;
+        justify-content: space-between;
       }
-
-      nav fluent-anchor {
-        margin-left: 10px;
+      a ion-icon {
+        display: block;
       }
-
-      #header-logo {
+      a {
+        height: calc(env(titlebar-area-height, 33px) - 6px);
+        background: var(--accent-fill-rest);
+        border-radius: 6px;
+        -webkit-app-region: no-drag;
+        app-region: no-drag;
+        pointer-events: all;
+        cursor: pointer;
+        width: 5em;
+        text-decoration: none;
+        color: white;
         display: flex;
         align-items: center;
+        justify-content: center;
       }
-
-      #back-button-block {
+      #info {
         display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        width: 11em;
-        margin: 20px 0;
+        align-items: center;
+        justify-content: space-between;
+        height: env(titlebar-area-height, 33px);
+        -webkit-app-region: no-drag;
+        app-region: no-drag;
+        pointer-events: all;
+        cursor: pointer;
       }
-
-      @media(prefers-color-scheme: light) {
+      #info img {
+        width: 22px;
+      }
+      #info h1 {
+        font-size: 14px;
+        margin-left: 10px;
+        font-weight: bold;
+      }
+      @media (max-width: 800px) {
+        :host,
+        header {
+          height: 3.6em;
+        }
+        #info h1 {
+          font-size: 20px;
+        }
+      }
+      @media (prefers-color-scheme: light) {
         header {
           color: black;
-        }
-
-        nav fluent-anchor::part(control) {
-          color: initial;
         }
       }
     `;
   }
-
   constructor() {
     super();
   }
@@ -69,23 +100,12 @@ export class AppHeader extends LitElement {
     Router.go("/home");
   }
 
-  logoTemplate() {
-    return html`
-      <div @click="${() => this.goBack()}" id="header-logo">
-        <img src="https://img.icons8.com/color/50/000000/clipboard.png" alt="Simple Edit app icon" />
-        <h2>${this.title}</h2>
-        </fluent-anchor>`;
-  }
-
   render() {
     return html`
-      <header>
-        <div id="back-button-block">
-          <div>
-            ${this.enableBack ? html`<fluent-anchor appearance="accent" href="/home">
-              Back
-            </fluent-anchor>` : this.logoTemplate()}
-          </div>
+       <header>
+        <div @click="${() => this.goBack()}" id="info">
+          <img src="https://img.icons8.com/color/50/000000/clipboard.png" alt="Simple Edit app icon" />
+          <h1>Super Copy</h1>
         </div>
       </header>
     `;

@@ -16,11 +16,15 @@
     "@pwabuilder/pwainstall": "^1.6.7",
     "@vaadin/router": "^1.7.4",
     "@webcomponents/webcomponentsjs": "^2.6.0",
+    "idb-keyval": "^6.0.3",
+    "idlize": "^0.1.1",
     "lit": "^2.0.2",
     "material-components-web": "^13.0.0",
     "workbox-build": "^6.4.2",
     "workbox-core": "^6.4.2",
-    "workbox-precaching": "^6.4.2"
+    "workbox-precaching": "^6.4.2",
+    "workbox-routing": "^6.4.2",
+    "workbox-strategies": "^6.4.2"
   },
   "devDependencies": {
     "@open-wc/rollup-plugin-html": "^1.2.5",

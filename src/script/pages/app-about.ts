@@ -38,17 +38,30 @@ export class AppAbout extends LitElement {
 
   render() {
     return html`
+    <app-header enableBack="${true}"></app-header>
+    <h2>About Page</h2>
+    <div id="info">
       <div>
-        <app-header enableBack="${true}"></app-header>
-        <h2>About Page</h2>
         <fluent-card>
-          <h2>Did you know?</h2>
-          <p>PWAs have access to many useful APIs in modern browsers! These
-            APIs have enabled many new types of apps that can be built as PWAs, such as advanced graphics editing apps, games, apps that use machine learning and more!
-          </p>
-          <p>Check out <fluent-anchor href="https://docs.microsoft.com/en-us/microsoft-edge/progressive-web-apps-chromium/how-to/handle-files">these docs</fluent-anchor> to learn more about the advanced features that you can use in your PWA</p>
+          <div>
+            <h2>Did you know?</h2>
+            <p>PWAs have access to many useful APIs in modern browsers! These
+              APIs have enabled many new types of apps that can be built as PWAs, such as advanced graphics editing apps,
+              games, apps that use machine learning and more!
+            </p>
+            <p>Check out <fluent-anchor
+                href="https://docs.microsoft.com/en-us/microsoft-edge/progressive-web-apps-chromium/how-to/handle-files">
+                these docs</fluent-anchor> to learn more about the advanced features that you can use in your PWA</p>
+            </div>
         </fluent-card>
       </div>
+    </div>
     `;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    "app-about": AppAbout,
   }
 }

@@ -1,40 +1,41 @@
-import { LitElement, css, html } from 'lit';
-import { property, customElement } from 'lit/decorators.js';
+import {LitElement, html, css} from 'lit';
+import {customElement, property, state} from 'lit/decorators.js';
+import "./clipboard-item"
 
 @customElement('app-clipboard-list')
 export class AppClipboardList extends LitElement {
-  @property({ type: String }) title = 'Super Clipboard';
+  static styles = css`
+  `;
+  @state() saved: Array<any> = [];
 
-  @property() enableBack: boolean = false;
+  @property({attribute: false})
+  listItems = [
+    { text: 'Make to-do list', completed: true },
+    { text: 'Complete Lit tutorial', completed: false }
+  ];
 
-  static get styles() {
-    return css`
-    `;
-  }
-
-  constructor() {
-    super();
-  }
-
-  updated(changedProperties: any) {
-    if (changedProperties.has('enableBack')) {
-      console.log('enableBack', this.enableBack);
-    }
+  async firstUpdated(): Promise<void> {
+    navigator.serviceWorker.addEventListener("message", (event) => {
+      console.log("client received: ", event.data)
+    });
   }
 
   render() {
+    const items = this.listItems;
     return html`
-      <header>
-        <div id="back-button-block">
-          <h1>${this.title}</h1>
-        </div>
-      </header>
+      <h2>To Do</h2>
+      <ul>
+        ${items.map((item) =>
+          html`
+            <app-clipboard-item >${item.text}</app-clipboard-item>`
+        )}
+      </ul>
     `;
   }
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    "app-clipboard-list": AppClipboardList,
+    "app-clipboard-list": AppClipboardList
   }
 }

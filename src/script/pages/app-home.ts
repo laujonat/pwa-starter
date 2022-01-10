@@ -1,6 +1,5 @@
 import { LitElement, css, html } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
-
 // For more info on the @pwabuilder/pwainstall component click here https://github.com/pwa-builder/pwa-install
 import '@pwabuilder/pwainstall';
 
@@ -23,10 +22,22 @@ export class AppHome extends LitElement {
         margin-bottom: 12px;
       }
 
+      #welcomeCard {
+        margin: 20px;
+        padding: 18px;
+      }
+
       #welcomeCard,
       #infoCard {
         padding: 18px;
-        padding-top: 0px;
+      }
+
+      #layout {
+        border: 1px solid purple;
+        height: 96vh;
+        width: auto;
+        display: flex;
+        flex-direction: column;
       }
 
       pwa-install {
@@ -69,8 +80,20 @@ export class AppHome extends LitElement {
     `;
   }
 
+  handleClick(event:  Event & {
+    target: HTMLButtonElement
+  }) {
+    const target = event.target as HTMLButtonElement;
+    if (target) {
+      console.log('target', target.value);
+    }
+  }
+
   constructor() {
     super();
+    navigator.serviceWorker.addEventListener('message', message => {
+      console.log("Message on Client", message)
+    });
   }
 
   async firstUpdated() {
@@ -89,6 +112,18 @@ export class AppHome extends LitElement {
     }
   }
 
+  postMessage(message: string) {
+    let text = navigator.clipboard.readText();
+    if(navigator.serviceWorker && navigator.serviceWorker.controller) {
+      console.log("client trying to send: ", text, message)
+      navigator.serviceWorker.controller.postMessage({
+        type: 'MESSAGE_IDENTIFIER',
+        msg: text,
+        blob: message
+      });
+    }
+  }
+
   async copyPageUrl() {
     try {
       await navigator.clipboard.writeText(location.href);
@@ -98,36 +133,37 @@ export class AppHome extends LitElement {
     }
   }
 
+  async getClipboardContents() {
+    try {
+      const clipboardItems = await navigator.clipboard.read();
+      for (const clipboardItem of clipboardItems) {
+        for (const type of clipboardItem.types) {
+          const blob = await clipboardItem.getType(type);
+          this.postMessage(URL.createObjectURL(blob));
+        }
+      }
+
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   render() {
     return html`
       <app-header></app-header>
-      <div>
-        <div id="welcomeBar">
-          <fluent-card id="welcomeCard">
-            <h2>${this.message}</h2>
-            ${'share' in navigator
-              ? html`<fluent-button appearance="primary" @click="${this.share}"
-                  >Share this Starter!</fluent-button
-                >`
-              : null}
-             ${'clipboard' in navigator
-              ? html`<fluent-button appearance="accent" @click="${this.copyPageUrl}"
-                  >Copy URL</fluent-button
-                >`
-              : null}
-            <p>
-              For more information on the PWABuilder pwa-starter, check out the
-              <fluent-anchor
-                href="https://github.com/pwa-builder/pwa-starter/wiki/Getting-Started
-                appearance="hypertext"
-                >Documentation on Github</fluent-anchor
-              >.
-            </p>
-          </fluent-card>
-          <fluent-anchor href="/about" appearance="accent">Navigate to About</fluent-anchor>
-          <pwa-install css="fluent-button">Install PWA Starter</pwa-install>
+      <div id="layout">
+        <div id="welcomeCard">
+          <h2>${this.message}</h2>
+          <fluent-anchor href="/about" appearance="accent">About</fluent-anchor>
+          ${'share' in navigator
+            ? html`<fluent-button appearance="primary" @click="${() => this.share()}">Share</fluent-button>`
+            : null}
+          ${'clipboard' in navigator
+            ? html`<fluent-button appearance="primary" @click="${() => this.getClipboardContents()}">Clipboard Contents</fluent-button>`
+            : null}
         </div>
-
+        <fluent-button appearance="accent" @click="${this.copyPageUrl}">Copy URL</fluent-button>
+        <pwa-install css="fluent-button">Install PWA Starter</pwa-install>
       </div>
     `;
   }

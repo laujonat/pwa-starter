@@ -4,19 +4,31 @@ import { precacheAndRoute } from "workbox-precaching";
 
 // Add custom service worker logic, such as a push notification serivce, or json request cache.
 
-const CACHE_NAME = "::test-worker";
-const version = "v0.0.1";
 
-self.addEventListener("message", (event: any) => {
+// self.addEventListener('message', event => {
+//   console.log('service-worker received: ', event.data)
+// });
+
+
+
+self.addEventListener("message", async (event: any) => {
+
+
   if (event.data && event.data.type === "SKIP_WAITING") {
      self.skipWaiting();
   }
   if (event.data && event.data.type === "MESSAGE_IDENTIFIER") {
     console.log('SW received msg::MESSAGE_IDENTIFIER: ', event.data)
  }
+ console.log(event);
+
 });
 
 self.addEventListener('fetch', (evt) => console.log("fetch", evt));
+
+const CACHE_NAME = "::test-worker";
+const version = "v0.0.1";
+
 self.addEventListener("install", function (event: any) {
   console.log("installing")
   event.waitUntil(

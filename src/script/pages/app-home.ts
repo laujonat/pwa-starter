@@ -2,7 +2,7 @@ import { LitElement, css, html } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 // For more info on the @pwabuilder/pwainstall component click here https://github.com/pwa-builder/pwa-install
 import '@pwabuilder/pwainstall';
-
+import '../components/clipboard-list'
 @customElement('app-home')
 export class AppHome extends LitElement {
   // For more information on using properties and state in lit
@@ -112,14 +112,13 @@ export class AppHome extends LitElement {
     }
   }
 
-  postMessage(message: string) {
-    let text = navigator.clipboard.readText();
+  async postMessage(message: string) {
+    let text = await navigator.clipboard.readText();
+    console.log('text to send', text)
     if(navigator.serviceWorker && navigator.serviceWorker.controller) {
-      console.log("client trying to send: ", text, message)
       navigator.serviceWorker.controller.postMessage({
         type: 'MESSAGE_IDENTIFIER',
-        msg: text,
-        blob: message
+        msg: text
       });
     }
   }
@@ -139,10 +138,10 @@ export class AppHome extends LitElement {
       for (const clipboardItem of clipboardItems) {
         for (const type of clipboardItem.types) {
           const blob = await clipboardItem.getType(type);
-          this.postMessage(URL.createObjectURL(blob));
+          console.log(blob)
+          await this.postMessage(URL.createObjectURL(blob));
         }
       }
-
     } catch (err) {
       console.error(err);
     }
@@ -163,6 +162,7 @@ export class AppHome extends LitElement {
             : null}
         </div>
         <fluent-button appearance="accent" @click="${this.copyPageUrl}">Copy URL</fluent-button>
+        <app-clipboard-list></app-clipboard-list>
         <pwa-install css="fluent-button">Install PWA Starter</pwa-install>
       </div>
     `;

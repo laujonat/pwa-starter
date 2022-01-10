@@ -10,13 +10,18 @@ export class AppClipboardList extends LitElement {
 
   @property({attribute: false})
   listItems = [
-    { text: 'Make to-do list', completed: true },
-    { text: 'Complete Lit tutorial', completed: false }
+    { text: '----', completed: true },
+    { text: '----', completed: false }
   ];
-
+  constructor() {
+    super();
+    navigator.serviceWorker.addEventListener("message", (event) => {
+      console.log("client received: ", event)
+    });
+  }
   async firstUpdated(): Promise<void> {
     navigator.serviceWorker.addEventListener("message", (event) => {
-      console.log("client received: ", event.data)
+      console.log("client received: ", event)
     });
   }
 
@@ -27,7 +32,7 @@ export class AppClipboardList extends LitElement {
       <ul>
         ${items.map((item) =>
           html`
-            <app-clipboard-item >${item.text}</app-clipboard-item>`
+            <app-clipboard-item item=${item.text}></app-clipboard-item>`
         )}
       </ul>
     `;

@@ -1,5 +1,5 @@
-import { LitElement, css, html, PropertyDeclarations } from 'lit';
-import { property, customElement, state } from 'lit/decorators.js';
+import { LitElement, css, html } from 'lit';
+import { property, customElement } from 'lit/decorators.js';
 
 
 @customElement('app-clipboard-item')

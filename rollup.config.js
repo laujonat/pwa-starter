@@ -10,7 +10,8 @@ export default {
   input: "index.html",
   output: {
     dir: "dist",
-    format: "es"
+    format: "es",
+    sourcemap: false
   },
   plugins: [
     html(),

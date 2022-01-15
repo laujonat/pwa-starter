@@ -21,7 +21,7 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2 
-      - name: Deploy in EC2
+      - name: Deploy in Droplet
         env:
             PRIVATE_KEY: ${{ secrets.KEY  }}
             HOSTNAME : ${{ secrets.HOST  }}
@@ -31,7 +31,7 @@ jobs:
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
           
-            #Now we have got the access of EC2 and we will start the deploy .
+            #Now we have got the access of Droplet and we will start the deploy .
             cd /code/pwa-starter &&
             git checkout main &&
             git fetch --all &&
@@ -39,3 +39,4 @@ jobs:
             git pull origin master &&
             cd .. &&
             docker-compose  up -d --build 
+            '

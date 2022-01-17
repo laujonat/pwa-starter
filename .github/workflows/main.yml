@@ -36,8 +36,8 @@ jobs:
             cd /code/pwa-starter &&
             git checkout main &&
             git fetch --all &&
-            git reset --hard origin/master &&
-            git pull origin master &&
+            git reset --hard origin/main &&
+            git pull origin main &&
             cd .. &&
-            docker-compose  up -d --build 
+            docker-compose up -d --build 
             '

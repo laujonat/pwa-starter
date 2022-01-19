@@ -38,6 +38,8 @@ jobs:
             git fetch --all &&
             git reset --hard origin/main &&
             git pull origin main &&
-            cd .. &&
-            docker-compose up -d --build 
+            docker build -t pwa . &&
+            docker run  pwa &&
+            docker cp pwa:/app/dist/ ./dist/ &&
+            docker rm -f pwa || true
             '

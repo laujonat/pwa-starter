@@ -39,6 +39,9 @@ jobs:
             git pull origin main &&
             docker build -t pwa . &&
             docker run --name pwa pwa &&
+            echo "Build static files completed. Copying..."
             docker cp pwa:/app/dist/ ./dist/ &&
-            docker rm -f pwa || true
+            echo "Removing stoped container..."
+            docker rm -f pwa || true &&
+            docker rmi -f $(docker images -f "dangling=true" -q)
             '

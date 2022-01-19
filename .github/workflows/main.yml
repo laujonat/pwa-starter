@@ -29,7 +29,6 @@ jobs:
             
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ls -lhrt
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
           
             #Now we have got the access of Droplet and we will start the deploy .
@@ -39,7 +38,7 @@ jobs:
             git reset --hard origin/main &&
             git pull origin main &&
             docker build -t pwa . &&
-            docker run  pwa &&
+            docker run --name pwa pwa &&
             docker cp pwa:/app/dist/ ./dist/ &&
             docker rm -f pwa || true
             '
